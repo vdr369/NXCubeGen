@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NX Cube Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+    input[type="number"] {
+      width: 100px;
+      padding: 0.3rem;
+      margin-left: 0.5rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>NX Cube Generator</h1>
+
+  <label>
+    Length:
+    <input type="number" id="len" value="10" min="1">
+  </label>
+  <label>
+    Width:
+    <input type="number" id="wid" value="10" min="1">
+  </label>
+  <label>
+    Height:
+    <input type="number" id="hit" value="10" min="1">
+  </label>
+
+  <button onclick="generateCube()">Generate Cube</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    async function generateCube() {
+      const len = document.getElementById("len").value;
+      const wid = document.getElementById("wid").value;
+      const hit = document.getElementById("hit").value;
+
+      document.getElementById("result").innerText = "⏳ Generating cube...";
+
+      try {
+        const res = await fetch("https://vdr18369-cubegen.serveo.net/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ len, wid, hit })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          document.getElementById("result").innerHTML = `
+            ✅ Cube generated!<br>
+            <a href="${data.downloadUrl}" target="_blank">Download ${data.fileName}</a>
+          `;
+        } else {
+          document.getElementById("result").innerText = "❌ Failed to generate cube";
+        }
+      } catch (err) {
+        console.error(err);
+        document.getElementById("result").innerText = "❌ Error connecting to server";
+      }
+    }
+  </script>
+</body>
+</html>
