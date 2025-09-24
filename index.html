@@ -74,10 +74,15 @@
       document.getElementById("result").innerText = "⏳ Generating cube...";
 
       try {
-        const res = await fetch("https://vdr18369-cubegen.serveo.net/generate", {
+        // ✨ This URL has been updated to your new ngrok address
+        const res = await fetch("https://reformingly-slickpaper-isadora.ngrok-free.dev/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ len, wid, hit })
+          body: JSON.stringify({ 
+            len: parseFloat(len), 
+            wid: parseFloat(wid), 
+            hit: parseFloat(hit) 
+          })
         });
 
         const data = await res.json();
