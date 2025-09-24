@@ -65,7 +65,7 @@
 
   <div class="result" id="result"></div>
 
-  <script>
+ <script>
     async function generateCube() {
       const len = document.getElementById("len").value;
       const wid = document.getElementById("wid").value;
@@ -74,10 +74,13 @@
       document.getElementById("result").innerText = "⏳ Generating cube...";
 
       try {
-        // ✨ This URL has been updated to your new ngrok address
         const res = await fetch("https://reformingly-slickpaper-isadora.ngrok-free.dev/generate", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            // ✨ ADD THIS LINE to bypass the ngrok browser warning
+            "ngrok-skip-browser-warning": "true" 
+          },
           body: JSON.stringify({ 
             len: parseFloat(len), 
             wid: parseFloat(wid), 
